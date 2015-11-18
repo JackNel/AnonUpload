@@ -42,18 +42,11 @@ public class AnonUploadController {
         anonFile.uploadTime = LocalDateTime.now();
         files.save(anonFile);
 
-
-        if (files.count() > 2) {
-            for (AnonFile tempFile : files.findAll()) {
-                for (AnonFile tempFile2 : files.findAll()) {
-                    while (tempFile.uploadTime.isBefore(tempFile2.uploadTime)) {
-                        files.delete(tempFile);
-
-                    }
-
-
-                }
-            }
+        if (files.count() > 3) {
+        AnonFile tempFile = files.findFirstByOrderByUploadTimeAsc();
+        files.delete(tempFile);
+        File diskFile = new File("public", tempFile.name);
+        diskFile.delete();
 
         }
         response.sendRedirect("/");
