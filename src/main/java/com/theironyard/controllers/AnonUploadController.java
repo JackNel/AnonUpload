@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,8 +25,10 @@ public class AnonUploadController {
 
     @RequestMapping("/files")
     public List<AnonFile> getFiles() {
+
         return (List<AnonFile>) files.findAll();
     }
+
 
     @RequestMapping("/upload")
     public void upload(HttpServletResponse response, MultipartFile file) throws IOException {
@@ -36,8 +39,23 @@ public class AnonUploadController {
         AnonFile anonFile = new AnonFile();
         anonFile.originalName = file.getOriginalFilename();
         anonFile.name = f.getName();
+        anonFile.uploadTime = LocalDateTime.now();
         files.save(anonFile);
 
+
+        if (files.count() > 2) {
+            for (AnonFile tempFile : files.findAll()) {
+                for (AnonFile tempFile2 : files.findAll()) {
+                    while (tempFile.uploadTime.isBefore(tempFile2.uploadTime)) {
+                        files.delete(tempFile);
+
+                    }
+
+
+                }
+            }
+
+        }
         response.sendRedirect("/");
     }
 }

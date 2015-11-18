@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by Jack on 11/18/15.
@@ -18,4 +19,7 @@ public class AnonFile {
 
     @Column(nullable = false)
     public String name;
+
+    @Column
+    public LocalDateTime uploadTime;
 }
