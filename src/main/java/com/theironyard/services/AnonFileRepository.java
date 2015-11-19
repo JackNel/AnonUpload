@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface AnonFileRepository extends PagingAndSortingRepository<AnonFile, Integer> {
     AnonFile findFirstByOrderByUploadTimeAsc();
+    List<AnonFile> findByIsPermFalse();
 }
