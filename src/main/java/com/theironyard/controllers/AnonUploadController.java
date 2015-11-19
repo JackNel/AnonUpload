@@ -47,9 +47,9 @@ public class AnonUploadController {
         files.save(anonFile);
 
 
-        /*
 
-         My Way to do it:
+
+         //My Way to do it:
         if (files.findByIsPermFalse().size() > 3) {
             List<AnonFile> tempList = files.findByIsPermFalse();
             AnonFile tempFile = tempList.get(0);
@@ -59,7 +59,7 @@ public class AnonUploadController {
             diskFile.delete();
 
         }
-
+/*
         //Another way to do it:
         List<AnonFile> filesList = (List<AnonFile>) files.findAll();
         List<AnonFile> filteredList = new ArrayList();
@@ -86,7 +86,7 @@ public class AnonUploadController {
             File diskFile = new File("public", af.name);
             diskFile.delete();
         }
-        */
+
 
         // Example using streams
         List<AnonFile> stuff = (List<AnonFile>) files.findAll();
@@ -97,7 +97,7 @@ public class AnonUploadController {
         if (nonPermFiles.size() > 3) {
             files.delete(nonPermFiles.get(0));
         }
-
+*/
         response.sendRedirect("/");
     }
 }
