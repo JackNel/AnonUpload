@@ -12,7 +12,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jack on 11/18/15.
@@ -44,6 +46,10 @@ public class AnonUploadController {
         anonFile.comment = comment;
         files.save(anonFile);
 
+
+        /*
+
+         My Way to do it:
         if (files.findByIsPermFalse().size() > 3) {
             List<AnonFile> tempList = files.findByIsPermFalse();
             AnonFile tempFile = tempList.get(0);
@@ -53,6 +59,45 @@ public class AnonUploadController {
             diskFile.delete();
 
         }
+
+        //Another way to do it:
+        List<AnonFile> filesList = (List<AnonFile>) files.findAll();
+        List<AnonFile> filteredList = new ArrayList();
+        for (AnonFile af : filteredList) {
+            if (!af.isPerm) {
+                filteredList.add(af);
+            }
+        }
+        if (filteredList.size() > 3) {
+            AnonFile af = filesList.get(0);
+            files.delete(af);
+
+            File diskFile = new File("public", af.name);
+            diskFile.delete();
+        }
+
+
+        // Another example of using a Repo query
+        ArrayList<AnonFile> filteredList = (ArrayList<AnonFile>) files.findByIsPermOrderByIdAsc(false);
+        if (filteredList.size() > 3) {
+            AnonFile af = filteredList.get(0);
+            files.delete(af);
+
+            File diskFile = new File("public", af.name);
+            diskFile.delete();
+        }
+        */
+
+        // Example using streams
+        List<AnonFile> stuff = (List<AnonFile>) files.findAll();
+        List<AnonFile> nonPermFiles = stuff.stream()
+                .filter(old -> !old.isPerm)
+                .collect(Collectors.toList());
+
+        if (nonPermFiles.size() > 3) {
+            files.delete(nonPermFiles.get(0));
+        }
+
         response.sendRedirect("/");
     }
 }

@@ -23,7 +23,7 @@ public class AnonFile {
     @Column
     public LocalDateTime uploadTime;
 
-    @Column
+    @Column(nullable = false)
     public boolean isPerm;
 
     @Column
