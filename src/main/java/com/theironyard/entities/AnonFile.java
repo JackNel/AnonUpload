@@ -25,4 +25,7 @@ public class AnonFile {
 
     @Column
     public boolean isPerm;
+
+    @Column
+    public String comment;
 }

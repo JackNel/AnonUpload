@@ -31,7 +31,7 @@ public class AnonUploadController {
 
 
     @RequestMapping("/upload")
-    public void upload(HttpServletResponse response, MultipartFile file, boolean isPerm) throws IOException {
+    public void upload(HttpServletResponse response, MultipartFile file, boolean isPerm, String comment) throws IOException {
         File f = File.createTempFile("file", file.getOriginalFilename(), new File("public"));
         FileOutputStream fos = new FileOutputStream(f);
         fos.write(file.getBytes());
@@ -41,6 +41,7 @@ public class AnonUploadController {
         anonFile.name = f.getName();
         anonFile.uploadTime = LocalDateTime.now();
         anonFile.isPerm = isPerm;
+        anonFile.comment = comment;
         files.save(anonFile);
 
         if (files.findByIsPermFalse().size() > 3) {
